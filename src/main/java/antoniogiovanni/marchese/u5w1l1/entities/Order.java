@@ -34,9 +34,10 @@ public class Order {
 
     public double totalPrice(){
         double total = 0;
-        for (MenuItem menuItem: menuItemList){
-            total+= menuItem.getPrice();
-        }
+//        for (MenuItem menuItem: menuItemList){
+//            total+= menuItem.getPrice();
+//        }
+        total = menuItemList.stream().mapToDouble(MenuItem::getPrice).sum();
         return total+(covers*coverCost);
     }
 
