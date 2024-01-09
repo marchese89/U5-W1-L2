@@ -1,14 +1,18 @@
 package antoniogiovanni.marchese.u5w1l1.config;
 
 
-import antoniogiovanni.marchese.u5w1l1.entities.Drink;
-import antoniogiovanni.marchese.u5w1l1.entities.Menu;
-import antoniogiovanni.marchese.u5w1l1.entities.Pizza;
-import antoniogiovanni.marchese.u5w1l1.entities.Topping;
+import antoniogiovanni.marchese.u5w1l1.entities.*;
+import antoniogiovanni.marchese.u5w1l1.enums.OrderState;
+import antoniogiovanni.marchese.u5w1l1.enums.TableState;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+import java.time.LocalDateTime;
 
 @Configuration
+@PropertySource("application.properties")
 public class BeansConfiguration {
 
     @Bean
@@ -115,5 +119,20 @@ public class BeansConfiguration {
         menu.addDrink(water());
         menu.addDrink(wine());
         return menu;
+    }
+    @Bean
+    public Table table(){
+        return new Table(1,4, TableState.FREE);
+    }
+
+    @Bean
+    public Order order(Table table,@Value("${coverCost}")Double coverCost){
+        Order order = new Order(1, OrderState.IN_PROGRESS,2, LocalDateTime.now(),table,coverCost);
+        order.addItem(hawaiianPizza());
+        order.addItem(margherita());
+        order.addItem(water());
+        order.addItem(lemonade());
+        order.addItem(pineapple());
+        return order;
     }
 }
